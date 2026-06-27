@@ -2,6 +2,7 @@ package org.example.spbexample.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.example.spbexample.beans.Item;
 import org.example.spbexample.services.JsonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,13 @@ public class AppController {
         itemList.add(item);
         item = new Item("A003","Coke");
         itemList.add(item);
+        JsonObject jo = jsonService.javaToJson(item);
+        //System.out.println("Item Code: " +jo.get("itemCode"));
 
         Gson gson = new Gson();
         JsonArray jsonArray = gson.toJsonTree(itemList).getAsJsonArray();
-        String output = jsonService.convertJsonToString(jsonArray);
-        System.out.println("Output: " + output);
+        Item targetItem = jsonService.getObjectFromJsonArray(jsonArray,"A002");
+        System.out.println("Item Code: " +targetItem.getItemCode()+" - "+targetItem.getItemName());
         return itemList;
     }
 }
